@@ -138,8 +138,14 @@
 
     document.getElementById('save-status').style.display = 'block';
     setTimeout(() => {
-      document.getElementById('notes-panel').style.display = 'none';
-    }, 2500);
+
+  // Optional: briefly show success panel
+
+
+  // Automatically save notes to CRM
+  saveNotesToCRM();
+
+}, 180000);
   }
 
   // Show the notes panel after 3 minutes (adjust to match your demo length)
@@ -149,12 +155,5 @@
   }, 180000); // 180000ms = 3 minutes
 </script>
 
-<!-- MANUAL TRIGGER BUTTON (remove before demo if you don't want it visible) -->
-<button onclick="document.getElementById('notes-panel').style.display='block'"
-  style="position:fixed; bottom:20px; left:20px; background:#0D2B55; 
-         color:#4FC3F7; border:1px solid #4FC3F7; border-radius:8px; 
-         padding:10px 16px; font-size:12px; cursor:pointer; z-index:9998;">
-  📋 Open CRM Notes
-</button>
 </body>
 </html>
