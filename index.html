@@ -73,6 +73,88 @@
 <iframe src="https://embed.liveavatar.com/v1/984b36fe-0cd3-4915-a0d8-ab04d8b02354?orientation=horizontal" allow="microphone" title="LiveAvatar Embed" style="aspect-ratio: 16/9;"></iframe>
 
   </div>
+<!-- POST-CALL NOTES PANEL -->
+<div id="notes-panel" style="display:none; position:fixed; bottom:20px; right:20px; 
+     width:320px; background:#0D2B55; border:1px solid #4FC3F7; border-radius:12px; 
+     padding:24px; z-index:9999; box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+  
+  <div style="color:#4FC3F7; font-size:11px; letter-spacing:2px; 
+              text-transform:uppercase; margin-bottom:16px; font-weight:700;">
+    📋 Call Completed — Save Notes to CRM
+  </div>
 
+  <input id="note-doctor" type="text" value="Dr. Sarah Chen" placeholder="Doctor Name"
+    style="width:100%; padding:10px; margin-bottom:10px; border-radius:6px; 
+           border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); 
+           color:white; font-size:13px;">
+
+  <input id="note-specialty" type="text" value="Cardiologist — NYU Langone" placeholder="Specialty"
+    style="width:100%; padding:10px; margin-bottom:10px; border-radius:6px; 
+           border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); 
+           color:white; font-size:13px;">
+
+  <textarea id="note-topics" placeholder="Topics discussed in the call..."
+    style="width:100%; padding:10px; margin-bottom:10px; border-radius:6px; 
+           border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); 
+           color:white; font-size:13px; height:80px; resize:none;"
+    >OzempicPro — Type 2 Diabetes efficacy data</textarea>
+
+  <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+    <input id="note-humanrep" type="checkbox">
+    <label style="color:#FF6B78; font-size:13px; cursor:pointer;">
+      ⚠️ Human Rep Requested
+    </label>
+  </div>
+
+  <button onclick="saveNotesToCRM()" 
+    style="width:100%; padding:12px; background:#1A6FB5; color:white; border:none; 
+           border-radius:8px; font-size:14px; font-weight:600; cursor:pointer;">
+    Save to CRM →
+  </button>
+
+  <div id="save-status" style="color:#00C896; font-size:12px; 
+       text-align:center; margin-top:10px; display:none;">
+    ✅ Saved to Google Sheets
+  </div>
+</div>
+
+<script>
+  // ── PASTE YOUR ZAPIER WEBHOOK URL HERE ──
+  const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/27766702/4buxd70/';
+
+  function saveNotesToCRM() {
+    const data = {
+      datetime:         new Date().toLocaleString(),
+      doctor_name:      document.getElementById('note-doctor').value,
+      specialty:        document.getElementById('note-specialty').value,
+      topics_discussed: document.getElementById('note-topics').value,
+      human_rep:        document.getElementById('note-humanrep').checked ? 'YES ⚠️' : 'No',
+    };
+
+    fetch(ZAPIER_WEBHOOK, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+
+    document.getElementById('save-status').style.display = 'block';
+    setTimeout(() => {
+      document.getElementById('notes-panel').style.display = 'none';
+    }, 2500);
+  }
+
+  // Show the notes panel after 3 minutes (adjust to match your demo length)
+  // OR you can manually trigger it by pressing the button below
+  setTimeout(() => {
+    document.getElementById('notes-panel').style.display = 'block';
+  }, 180000); // 180000ms = 3 minutes
+</script>
+
+<!-- MANUAL TRIGGER BUTTON (remove before demo if you don't want it visible) -->
+<button onclick="document.getElementById('notes-panel').style.display='block'"
+  style="position:fixed; bottom:20px; left:20px; background:#0D2B55; 
+         color:#4FC3F7; border:1px solid #4FC3F7; border-radius:8px; 
+         padding:10px 16px; font-size:12px; cursor:pointer; z-index:9998;">
+  📋 Open CRM Notes
+</button>
 </body>
 </html>
